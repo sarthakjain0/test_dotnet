@@ -1,0 +1,48 @@
+﻿@model test_dotnet.Models.User
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<style>
+    .details-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 10px;
+    }
+
+        .details-grid h4 {
+            margin-bottom: 0;
+        }
+</style>
+
+<h2>User Details</h2>
+
+<div class="details-grid">
+    <div>
+        <h4>Name:</h4>
+        <p>@Model.Name</p>
+    </div>
+
+    <div>
+        <h4>Email:</h4>
+        <p>@Model.Email</p>
+    </div>
+
+    <div>
+        <h4>Phone Number:</h4>
+        <p>@Model.PhoneNumber</p>
+    </div>
+
+    <div>
+        <h4>Country:</h4>
+        <p>@Model.Country</p>
+    </div>
+
+    <div>
+        <h4>State:</h4>
+        <p>@Model.State</p>
+    </div>
+</div>
+
+@Html.ActionLink("Back to List", "Index")

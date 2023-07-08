@@ -1,0 +1,84 @@
+﻿@model test_dotnet.Models.User
+
+@{
+    ViewBag.Title = "Create";
+}
+<style>
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+    }
+</style>
+
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-container">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Name)
+            @Html.TextBoxFor(m => m.Name)
+            @Html.ValidationMessageFor(m => m.Name)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email)
+            @Html.ValidationMessageFor(m => m.Email)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.PhoneNumber)
+            @Html.TextBoxFor(m => m.PhoneNumber)
+            @Html.ValidationMessageFor(m => m.PhoneNumber)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Country)
+            @Html.DropDownListFor(m => m.Country, (SelectList)ViewBag.Countries, "Select a country", new { id = "CountryDropdown", @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Country)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.State)
+            @Html.DropDownListFor(m => m.State, (SelectList)ViewBag.States, "Select a state", new { id = "StateDropdown", @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.State)
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval") <!-- Include the jQuery Validation bundle -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script> <!-- Include the jQuery Validate Unobtrusive script -->
+    <script>
+        $(function () {
+            $("#CountryDropdown").change(function () {
+                var selectedCountry = $(this).val();
+                $.ajax({
+                    url: '@Url.Action("GetStates", "Home")',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { countryName: selectedCountry },
+                    success: function (response) {
+                        var statesDropdown = $("#StateDropdown");
+                        statesDropdown.empty();
+                        $.each(response, function (index, value) {
+                            statesDropdown.append($('<option>').text(value).attr('value', value));
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error);
+                    }
+                });
+            });
+        });
+    </script>
+}
